@@ -3,9 +3,16 @@ package com.chooloo.www.chooloolib.service
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.media.AudioManager
+import android.media.MediaPlayer
+import android.os.Handler
+import android.telecom.Call.Callback
 import android.telecom.CallAudioState
 import android.telecom.InCallService
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.chooloo.www.chooloolib.R
 import com.chooloo.www.chooloolib.interactor.callaudio.CallAudiosInteractor
 import com.chooloo.www.chooloolib.interactor.calls.CallsInteractor
 import com.chooloo.www.chooloolib.model.Call
@@ -23,8 +30,38 @@ class CallService : InCallService() {
     @Inject lateinit var callsInteractor: CallsInteractor
     @Inject lateinit var callNotification: CallNotification
 
-    val calls = MutableLiveData<List<Call>>()
+    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var runnable:Runnable
+    private var handler: Handler = Handler()
+    private var isPlayed:Boolean = false
 
+    val calls = MutableLiveData<List<Call>>()
+    private val callListener = object : Callback() {
+        override fun onStateChanged(call: android.telecom.Call?, state: Int) {
+            super.onStateChanged(call, state)
+            if (state == android.telecom.Call.STATE_DIALING) {
+               Toast.makeText(applicationContext,"dialing",Toast.LENGTH_LONG).show();
+                mediaPlayer = MediaPlayer.create(applicationContext, R.raw.ring)
+                mediaPlayer.setOnCompletionListener {
+                    Toast.makeText(applicationContext,"ad completed",Toast.LENGTH_LONG).show();
+                }
+//                mediaPlayer.setAudioStreamType(AudioManager.MODE_IN_CALL);
+                mediaPlayer.start()
+                isPlayed=true;
+                Toast.makeText(applicationContext,"media playing",Toast.LENGTH_SHORT).show()
+            }
+            if (state != android.telecom.Call.STATE_DIALING) {
+            if(isPlayed){
+                mediaPlayer.stop();
+            }
+            }
+//            if (state == android.telecom.Call.STATE_ACTIVE) {
+//
+//            } else if (state == android.telecom.Call.STATE_DISCONNECTED || state == android.telecom.Call.STATE_DISCONNECTING) {
+//
+//            }
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -41,6 +78,9 @@ class CallService : InCallService() {
     override fun onCallAdded(telecomCall: android.telecom.Call) {
         super.onCallAdded(telecomCall)
         addCall(Call(telecomCall))
+        telecomCall.registerCallback(callListener)
+
+        Toast.makeText(this,"Call Added",Toast.LENGTH_LONG).show();
         callsInteractor.entryAddCall(Call(telecomCall))
         if (!sIsActivityActive) {
             startCallActivity()
@@ -56,10 +96,12 @@ class CallService : InCallService() {
 
     override fun onCallAudioStateChanged(audioState: CallAudioState) {
         super.onCallAudioStateChanged(audioState)
+        Log.d("SHYAM", audioState.toString())
         callAudios.entryCallAudioStateChanged(callAudioState)
     }
 
     private fun startCallActivity() {
+
         val intent = Intent(this, CallActivity::class.java)
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
@@ -68,6 +110,8 @@ class CallService : InCallService() {
     private fun addCall(call: Call) {
         val list = calls.value?.toMutableList()
         list?.add(call)
+        println("Call added");
+        Log.d("SHYAM","added");
         calls.value = list
     }
 

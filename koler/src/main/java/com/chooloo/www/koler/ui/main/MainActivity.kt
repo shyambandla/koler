@@ -40,7 +40,7 @@ class MainActivity : BaseActivity<MainViewState>() {
 
         binding.apply {
             mainTabs.viewPager = mainViewPager
-            mainTabs.setHeadersResList(arrayOf(R.string.contacts, R.string.recents))
+            with(mainTabs) { setHeadersResList(arrayOf(R.string.contacts, R.string.recents,R.string.preferences)) }
 
             mainMenuButton.setOnClickListener {
                 viewState.onMenuClick()

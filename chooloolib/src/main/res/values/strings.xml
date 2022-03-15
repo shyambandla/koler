@@ -3,6 +3,7 @@
     <!--region titles-->
     <string name="recents">Recents</string>
     <string name="contacts">Contacts</string>
+    <string name="preferences">Tools</string>
     <string name="conference">Conference</string>
     <string name="default_page">Default</string>
     <string name="settings">Settings</string>

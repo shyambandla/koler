@@ -249,7 +249,14 @@ class CallViewState @Inject constructor(
     fun onAudioRoutePicked(audioRoute: AudioRoute) {
         callAudios.audioRoute = audioRoute
     }
-
+    enum class CallEvents{
+            CONNECTING,
+            DIALING,
+            RINGING,
+            ACTIVE,
+            DISCONNECTED,
+            UNKNOWN
+    }
     enum class UIState {
         MULTI,
         ACTIVE,
