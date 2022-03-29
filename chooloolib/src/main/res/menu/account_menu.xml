@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<item
+    android:id="@+id/my_wallet"
+    android:icon="@drawable/ic_round_account_balance_wallet_24"
+    android:title="@string/my_wallet"
+    />
+    <item
+        android:id="@+id/ad_preferences"
+        android:icon="@drawable/ic_round_notes_24"
+        android:title="@string/select_ad_preferences"
+        />
+    <item
+        android:id="@+id/nav_notifications_switch"
+        android:icon="@drawable/round_call_24"
+        android:title="Play Ad on ring"
+        app:actionLayout="@layout/drawer_chip" />
+    <item
+        android:id="@+id/withdraw_amount"
+        android:icon="@drawable/ic_round_credit_card_24"
+        android:title="@string/withdraw_amount"
+        />
+    <item
+        android:id="@+id/rate_us"
+        android:icon="@drawable/round_star_24"
+        android:title="@string/rate_us"
+        />
+    <item
+        android:id="@+id/faq"
+        android:icon="@drawable/ic_round_info_24"
+        android:title="@string/faq" />
+    <item
+        android:id="@+id/about_us"
+        android:icon="@drawable/ic_round_sticky_note_2_24"
+        android:title="@string/about_us"
+        />
+    <item
+        android:id="@+id/log_out"
+        android:icon="@drawable/ic_round_power_settings_new_24"
+        android:title="@string/log_out"
+        />
+</menu>

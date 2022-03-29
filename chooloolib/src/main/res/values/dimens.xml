@@ -33,6 +33,7 @@
     <dimen name="swipe_indicator_height">2.5dp</dimen>
     <dimen name="swipe_indicator_width">35dp</dimen>
     <dimen name="swipe_indicator_margin">8dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
     <!--endregion-->
 
     <!--region toolbar-->

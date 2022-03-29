@@ -1,6 +1,7 @@
 package com.chooloo.www.chooloolib.di.factory.fragment
 
 import androidx.annotation.StringRes
+import com.chooloo.www.chooloolib.ui.account.AccountFragment
 import com.chooloo.www.chooloolib.ui.base.BaseChoicesFragment
 import com.chooloo.www.chooloolib.ui.briefcontact.BriefContactFragment
 import com.chooloo.www.chooloolib.ui.callitems.CallItemsFragment
@@ -18,6 +19,7 @@ import com.chooloo.www.chooloolib.ui.settings.SettingsFragment
 
 interface FragmentFactory {
     fun getContactFragment(): ContactFragment
+    fun getAccountFragment():AccountFragment
     fun getDialpadFragment(): DialpadFragment
     fun getSettingsFragment(): SettingsFragment
     fun getContactsFragment(): ContactsFragment

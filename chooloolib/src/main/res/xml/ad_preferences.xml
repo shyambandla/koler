@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+               <SwitchPreference
+                    app:key="softdrink"
+                   app:title="SoftDrink and Beverage Ads"
+            />
+    <SwitchPreference
+        app:key="food"
+        app:title="Food and Snacks Ads"
+        />
+    <SwitchPreference
+        app:key="schools"
+        app:title="Schools and Institution of Learning Ads"
+        />
+    <SwitchPreference
+        app:key="telecom"
+        app:title="Telecom and Phone Ads"
+        />
+    <SwitchPreference
+        app:key="furniture"
+        app:title="Furniture,paint, and interior design  Ads"
+        />
+    <SwitchPreference
+        app:key="bank"
+        app:title="Bank,insurence, and financialAds"
+        />
+    <SwitchPreference
+        app:key="loan"
+        app:title="loans and credit Ads"
+        />
+    <SwitchPreference
+        app:key="retail"
+        app:title="Retail and Supermarket Ads"
+        />
+    <SwitchPreference
+        app:key="betting"
+        app:title="Betting Ads"
+        />
+    <SwitchPreference
+        app:key="hotel"
+        app:title="Hotels,restaurants and cafe Ads"
+        />
+    <SwitchPreference
+        app:key="raid"
+        app:title="Ride-hailing Ads"
+        />
+    <SwitchPreference
+        app:key="properties"
+        app:title="Properties and real Estate Ads"
+        />
+
+    <SwitchPreference
+        app:key="ecommerce"
+        app:title="E-coommerce Ads"
+        />
+    <SwitchPreference
+        app:key="motor"
+        app:title="Motor vehicle and automotive Ads"
+        />
+
+    <SwitchPreference
+        app:key="travel"
+        app:title="Travel and Tourisum Ads"
+        />
+
+    <SwitchPreference
+        app:key="government"
+        app:title="Government and parastatal Ads"
+        />
+    <SwitchPreference
+        app:key="job"
+        app:title="Job and Employment Ads"
+        />
+
+    <SwitchPreference
+        app:key="political"
+        app:title="Political Ads"
+        />
+    <SwitchPreference
+        app:key="household"
+        app:title="House hold items Ads"
+        />
+
+    <SwitchPreference
+        app:key="beauty"
+        app:title="Beauty and cosmetic Ads"
+        />
+
+    <SwitchPreference
+        app:key="alcoholic_ads"
+        app:title="Alcoholic drinks Ads"
+        />
+
+    <SwitchPreference
+        app:key="events_ads"
+        app:title="Events Ads"
+        />
+
+
+</PreferenceScreen>

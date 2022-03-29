@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<com.github.abdularis.civ.CircleImageView
+    android:layout_width="69dp"
+    android:id="@+id/profile_icon"
+    android:layout_marginTop="20dp"
+    android:src="@drawable/profile"
+    android:scaleType="fitCenter"
+    android:layout_marginStart="20dp"
+    android:layout_height="69dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/profile_name"
+        android:layout_alignParentEnd="true"
+
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/shyam"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/profile_number"
+        android:layout_below="@+id/profile_name"
+        android:layout_alignParentEnd="true"
+        android:textColor="@android:color/black"
+       android:layout_marginHorizontal="10dp"
+        android:textSize="20sp"
+        android:text="7997728342"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

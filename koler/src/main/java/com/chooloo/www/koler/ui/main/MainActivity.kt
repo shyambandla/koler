@@ -25,10 +25,10 @@ class MainActivity : BaseActivity<MainViewState>() {
     private val recentsViewState: RecentsViewState by viewModels()
     private val contactsViewState: ContactsViewState by viewModels()
     private val binding by lazy { MainBinding.inflate(layoutInflater) }
-    private val _fragments by lazy { listOf(_contactsFragment, _recentsFragment) }
+    private val _fragments by lazy { listOf(_contactsFragment, _recentsFragment,_accountFragment) }
     private val _recentsFragment by lazy { choolooFragmentFactory.getRecentsFragment() }
     private val _contactsFragment by lazy { choolooFragmentFactory.getContactsFragment() }
-
+    private val _accountFragment by lazy { choolooFragmentFactory.getAccountFragment() }
     @Inject lateinit var prompts: PromptsInteractor
     @Inject lateinit var screens: ScreensInteractor
     @Inject lateinit var fragmentFactory: FragmentFactory

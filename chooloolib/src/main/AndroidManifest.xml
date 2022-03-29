@@ -4,16 +4,21 @@
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
-
     <uses-permission android:name="android.permission.VIBRATE" />
-
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application>
+
+        <activity
+            android:name=".ui.ads.SelectPreferencesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WalletActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.call.CallActivity"
-            android:exported="false"
             android:configChanges="screenSize|keyboardHidden"
+            android:exported="false"
             android:screenOrientation="fullSensor" />
         <activity
             android:name=".ui.permissions.PermissionRequestActivity"
@@ -31,7 +36,6 @@
             android:exported="true"
             android:foregroundServiceType="phoneCall"
             android:permission="android.permission.BIND_INCALL_SERVICE">
-
             <meta-data
                 android:name="android.telecom.IN_CALL_SERVICE_UI"
                 android:value="true" />
@@ -43,4 +47,5 @@
 
         <receiver android:name=".receiver.CallBroadcastReceiver" />
     </application>
+
 </manifest>

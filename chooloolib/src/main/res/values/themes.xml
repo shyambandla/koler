@@ -24,7 +24,7 @@
     <style name="KolerBottomSheet" parent="Theme.MaterialComponents.DayNight.BottomSheetDialog">
         <item name="android:navigationBarColor">?colorPrimarySurface</item>
         <item name="bottomSheetStyle">@style/Chooloo.BottomDialog.BottomSheetStyle</item>
-<!--        <item name="android:layout_margin">2dp</item>-->
+        <!--        <item name="android:layout_margin">2dp</item>-->
     </style>
 
     <style name="KolerAlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
@@ -62,4 +62,10 @@
         <item name="colorSecondary">@color/red_background</item>
         <item name="colorOnSecondary">@color/red_foreground</item>
     </style>
+
+
+
+    <style name="Theme.Koler.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Koler.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
