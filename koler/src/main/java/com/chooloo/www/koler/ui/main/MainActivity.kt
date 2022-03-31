@@ -1,6 +1,7 @@
 package com.chooloo.www.koler.ui.main
 
 import android.content.Intent
+import android.icu.number.NumberFormatter.with
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -13,6 +14,8 @@ import com.chooloo.www.chooloolib.ui.recents.RecentsViewState
 import com.chooloo.www.koler.R
 import com.chooloo.www.koler.databinding.MainBinding
 import com.chooloo.www.koler.di.factory.fragment.FragmentFactory
+import com.google.android.gms.common.util.CollectionUtils.listOf
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import com.chooloo.www.chooloolib.di.factory.fragment.FragmentFactory as ChoolooFragmentFactory
@@ -35,9 +38,15 @@ class MainActivity : BaseActivity<MainViewState>() {
     @Inject lateinit var choolooFragmentFactory: ChoolooFragmentFactory
 
 
+
     override fun onSetup() {
         screens.disableKeyboard()
-
+        val firAuth=FirebaseAuth.getInstance().currentUser;
+        if(firAuth==null){
+            val intent=Intent(applicationContext,OnBoardActivity::class.java);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent)
+        }
         binding.apply {
             mainTabs.viewPager = mainViewPager
             with(mainTabs) { setHeadersResList(arrayOf(R.string.contacts, R.string.recents,R.string.preferences)) }

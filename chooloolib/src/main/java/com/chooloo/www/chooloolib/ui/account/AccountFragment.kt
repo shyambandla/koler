@@ -67,8 +67,8 @@ class AccountFragment : Fragment() {
                    startActivity(intent)
                }
                R.id.log_out->{
-                   val intent=Intent(activity,LogoutActivity::class.java)
-                   startActivity(intent)
+
+                  
                }
            }
             true
