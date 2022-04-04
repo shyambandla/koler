@@ -8,7 +8,9 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application>
-
+        <activity
+            android:name=".ui.faq.FaqActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.ads.SelectPreferencesActivity"
             android:exported="false" />

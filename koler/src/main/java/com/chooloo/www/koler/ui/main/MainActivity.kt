@@ -1,8 +1,13 @@
 package com.chooloo.www.koler.ui.main
 
+import android.app.role.RoleManager
 import android.content.Intent
 import android.icu.number.NumberFormatter.with
+import android.os.Build
+import android.os.Bundle
+import android.telecom.TelecomManager
 import android.view.MotionEvent
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -36,11 +41,12 @@ class MainActivity : BaseActivity<MainViewState>() {
     @Inject lateinit var screens: ScreensInteractor
     @Inject lateinit var fragmentFactory: FragmentFactory
     @Inject lateinit var choolooFragmentFactory: ChoolooFragmentFactory
-
+     val REQUEST_CODE_SET_DEFAULT_DIALER=200
 
 
     override fun onSetup() {
         screens.disableKeyboard()
+
         val firAuth=FirebaseAuth.getInstance().currentUser;
         if(firAuth==null){
             val intent=Intent(applicationContext,OnBoardActivity::class.java);
@@ -137,6 +143,37 @@ class MainActivity : BaseActivity<MainViewState>() {
     }
 
 
+
+    private fun checkDefaultDialer() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+            return
+
+        val telecomManager = getSystemService(TELECOM_SERVICE) as TelecomManager
+        val isAlreadyDefaultDialer = packageName == telecomManager.defaultDialerPackage
+        if (isAlreadyDefaultDialer)
+            return
+        val intent = Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER)
+            .putExtra(TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME, packageName)
+        startActivityForResult(intent, REQUEST_CODE_SET_DEFAULT_DIALER)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            REQUEST_CODE_SET_DEFAULT_DIALER -> checkSetDefaultDialerResult(resultCode)
+        }
+    }
+
+    private fun checkSetDefaultDialerResult(resultCode: Int) {
+        val message = when (resultCode) {
+            RESULT_OK       -> "User accepted request to become default dialer"
+            RESULT_CANCELED -> "User declined request to become default dialer"
+            else            -> "Unexpected result code $resultCode"
+        }
+
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+    }
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         screens.ignoreEditTextFocus(event)
         return super.dispatchTouchEvent(event)

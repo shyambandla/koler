@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        app:title="Toggle All">
+        <SwitchPreference
+            android:key="toggle_all"
+            app:title="Enable All Types Of Ads"
+            />
+    </PreferenceCategory>
 
+
+<PreferenceCategory
+    app:title="Toggle individually"
+    >
                <SwitchPreference
                     app:key="softdrink"
                    app:title="SoftDrink and Beverage Ads"
@@ -97,6 +108,6 @@
         app:key="events_ads"
         app:title="Events Ads"
         />
-
+</PreferenceCategory>
 
 </PreferenceScreen>

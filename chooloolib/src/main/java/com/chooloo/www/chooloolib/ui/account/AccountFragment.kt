@@ -14,6 +14,8 @@ import com.chooloo.www.chooloolib.R
 import com.chooloo.www.chooloolib.WalletActivity
 import com.google.android.material.navigation.NavigationView
 import com.chooloo.www.chooloolib.ui.ads.SelectPreferencesActivity
+import com.chooloo.www.chooloolib.ui.faq.FaqActivity
+
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -68,7 +70,16 @@ class AccountFragment : Fragment() {
                }
                R.id.log_out->{
 
-                  
+                  Toast.makeText(this.context,"Logout not implemented yet",Toast.LENGTH_LONG).show();
+               }
+
+               R.id.withdraw_amount->{
+                   val intent=Intent(activity,WalletActivity::class.java)
+                       startActivity(intent)
+               }
+               R.id.about_us->{
+                   val intent=Intent(activity,FaqActivity::class.java)
+                   startActivity(intent)
                }
            }
             true
