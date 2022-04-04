@@ -20,14 +20,16 @@
         <activity
             android:name=".ui.call.CallActivity"
             android:configChanges="screenSize|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:screenOrientation="unspecified" />
             android:exported="false"
             android:screenOrientation="fullSensor" />
         <activity
             android:name=".ui.permissions.PermissionRequestActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="unspecified" />
         <activity
             android:name=".ui.permissions.DefaultDialerRequestActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="unspecified" />
 
         <meta-data
             android:name="preloaded_fonts"
