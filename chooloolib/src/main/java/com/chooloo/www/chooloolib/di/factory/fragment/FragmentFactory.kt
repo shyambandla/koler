@@ -5,7 +5,7 @@ import com.chooloo.www.chooloolib.ui.account.AccountFragment
 import com.chooloo.www.chooloolib.ui.base.BaseChoicesFragment
 import com.chooloo.www.chooloolib.ui.briefcontact.BriefContactFragment
 import com.chooloo.www.chooloolib.ui.callitems.CallItemsFragment
-import com.chooloo.www.chooloolib.ui.contact.ContactFragment
+
 import com.chooloo.www.chooloolib.ui.contacts.ContactsFragment
 import com.chooloo.www.chooloolib.ui.contacts.ContactsSuggestionsFragment
 import com.chooloo.www.chooloolib.ui.dialer.DialerFragment
@@ -18,7 +18,6 @@ import com.chooloo.www.chooloolib.ui.recents.RecentsHistoryFragment
 import com.chooloo.www.chooloolib.ui.settings.SettingsFragment
 
 interface FragmentFactory {
-    fun getContactFragment(): ContactFragment
     fun getAccountFragment():AccountFragment
     fun getDialpadFragment(): DialpadFragment
     fun getSettingsFragment(): SettingsFragment

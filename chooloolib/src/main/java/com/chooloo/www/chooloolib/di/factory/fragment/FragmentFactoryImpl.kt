@@ -4,7 +4,6 @@ import com.chooloo.www.chooloolib.ui.account.AccountFragment
 import com.chooloo.www.chooloolib.ui.base.BaseChoicesFragment
 import com.chooloo.www.chooloolib.ui.briefcontact.BriefContactFragment
 import com.chooloo.www.chooloolib.ui.callitems.CallItemsFragment
-import com.chooloo.www.chooloolib.ui.contact.ContactFragment
 import com.chooloo.www.chooloolib.ui.contacts.ContactsFragment
 import com.chooloo.www.chooloolib.ui.contacts.ContactsSuggestionsFragment
 import com.chooloo.www.chooloolib.ui.dialer.DialerFragment
@@ -20,7 +19,6 @@ import javax.inject.Singleton
 
 @Singleton
 class FragmentFactoryImpl @Inject constructor() : FragmentFactory {
-    override fun getContactFragment() = ContactFragment()
     override fun getAccountFragment()=AccountFragment()
     override fun getDialpadFragment() = DialpadFragment()
     override fun getSettingsFragment() = SettingsFragment()
