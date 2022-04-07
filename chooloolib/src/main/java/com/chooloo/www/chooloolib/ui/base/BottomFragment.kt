@@ -20,7 +20,6 @@ open class BottomFragment<FragmentType : BaseFragment<out BaseViewState>>(
     @Inject lateinit var baseActivity: BaseActivity<*>
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         showsDialog = true
