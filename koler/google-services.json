@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "331909349770",
+    "project_id": "elijah-81ee1",
+    "storage_bucket": "elijah-81ee1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331909349770:android:23e1da8200f620c6a2c873",
+        "android_client_info": {
+          "package_name": "com.chooloo.www.koler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "331909349770-5fhbmvr1uge7vj8j3ah86j3csp6tg5am.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chooloo.www.koler",
+            "certificate_hash": "094ee4a8cb45108bbbc87085e1e9daf1bbab2d7e"
+          }
+        },
+        {
+          "client_id": "331909349770-76vktl021tsah8d342u6gl38flv6l70a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chooloo.www.koler",
+            "certificate_hash": "6b5c03c167d4f40203a1037ccc14e1df97681ef8"
+          }
+        },
+        {
+          "client_id": "331909349770-l29fit4apdgrd4i5gcmb1sqek56urr7e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkInjkNDkuY9W_STz1buVhEBOYMlUQS8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "331909349770-l29fit4apdgrd4i5gcmb1sqek56urr7e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
