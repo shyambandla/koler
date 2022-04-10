@@ -40,15 +40,15 @@ class CallService : InCallService() {
         override fun onStateChanged(call: android.telecom.Call?, state: Int) {
             super.onStateChanged(call, state)
             if (state == android.telecom.Call.STATE_DIALING) {
-               Toast.makeText(applicationContext,"dialing",Toast.LENGTH_LONG).show();
-                mediaPlayer = MediaPlayer.create(applicationContext, R.raw.ring)
+              // Toast.makeText(applicationContext,"dialing",Toast.LENGTH_LONG).show();
+                mediaPlayer = MediaPlayer.create(this@CallService, R.raw.ring)
                 mediaPlayer.setOnCompletionListener {
-                    Toast.makeText(applicationContext,"ad completed",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this@CallService,"ad completed",Toast.LENGTH_LONG).show();
                 }
 //                mediaPlayer.setAudioStreamType(AudioManager.MODE_IN_CALL);
                 mediaPlayer.start()
                 isPlayed=true;
-                Toast.makeText(applicationContext,"media playing",Toast.LENGTH_SHORT).show()
+             //   Toast.makeText(applicationContext,"media playing",Toast.LENGTH_SHORT).show()
             }
             if (state != android.telecom.Call.STATE_DIALING) {
             if(isPlayed){
@@ -80,7 +80,7 @@ class CallService : InCallService() {
         addCall(Call(telecomCall))
         telecomCall.registerCallback(callListener)
 
-        Toast.makeText(this,"Call Added",Toast.LENGTH_LONG).show();
+        Toast.makeText(this@CallService,"Call Added",Toast.LENGTH_LONG).show();
         callsInteractor.entryAddCall(Call(telecomCall))
         if (!sIsActivityActive) {
             startCallActivity()
@@ -102,8 +102,8 @@ class CallService : InCallService() {
 
     private fun startCallActivity() {
 
-        val intent = Intent(this, CallActivity::class.java)
-        intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
+        val intent = Intent(this@CallService, CallActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }
 
