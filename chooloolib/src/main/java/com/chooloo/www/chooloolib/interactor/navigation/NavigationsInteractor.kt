@@ -6,10 +6,7 @@ import com.chooloo.www.chooloolib.ui.base.BaseActivity
 interface NavigationsInteractor : BaseInteractor<NavigationsInteractor.Listener> {
     interface Listener
 
-    fun donate()
-    fun rateApp()
-    fun sendEmail()
-    fun reportBug()
+
     fun goToAppGithub()
     fun manageBlockedNumber()
     fun goToLauncherActivity()

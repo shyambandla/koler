@@ -25,40 +25,7 @@ class NavigationsInteractorImpl @Inject constructor(
     BaseObservable<NavigationsInteractor.Listener>(),
     NavigationsInteractor {
 
-    override fun donate() {
-        context.startActivity(
-            Intent(
-                ACTION_VIEW,
-                Uri.parse(strings.getString(R.string.donation_link))
-            ).addFlags(FLAG_ACTIVITY_NEW_TASK)
-        )
-    }
 
-    override fun rateApp() {
-        context.startActivity(
-            Intent(ACTION_VIEW)
-                .setData(Uri.parse("market://details?id=" + context.packageName))
-                .addFlags(FLAG_ACTIVITY_NEW_TASK)
-        )
-    }
-
-    override fun sendEmail() {
-        context.startActivity(
-            Intent(ACTION_SEND)
-                .setType("message/rfc822")
-                .putExtra(EXTRA_EMAIL, arrayOf(strings.getString(R.string.support_email)))
-                .setFlags(FLAG_ACTIVITY_NEW_TASK)
-        )
-    }
-
-    override fun reportBug() {
-        context.startActivity(
-            Intent(
-                ACTION_VIEW,
-                Uri.parse(strings.getString(R.string.app_bug_reporting_url))
-            ).addFlags(FLAG_ACTIVITY_NEW_TASK)
-        )
-    }
 
     override fun goToAppGithub() {
         context.startActivity(

@@ -31,12 +31,10 @@ open class SettingsViewState @Inject constructor(
 
     open fun onMenuItemClick(menuItem: MenuItem) {
         when (menuItem.itemId) {
-            R.id.menu_chooloo_rate -> navigationsInteractor.rateApp()
+
             R.id.menu_chooloo_theme_mode -> askForThemeModeEvent.call()
             R.id.menu_chooloo_compact_mode -> askForCompactEvent.call()
             R.id.menu_chooloo_animations -> askForAnimationsEvent.call()
-            R.id.menu_chooloo_email -> navigationsInteractor.sendEmail()
-            R.id.menu_chooloo_report_bugs -> navigationsInteractor.reportBug()
             R.id.menu_chooloo_accent_color -> askForColorEvent.call(R.array.accent_colors)
         }
     }
