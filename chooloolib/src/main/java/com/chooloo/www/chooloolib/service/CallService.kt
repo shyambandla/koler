@@ -1,10 +1,16 @@
 package com.chooloo.www.chooloolib.service
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.content.SharedPreferences
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.Uri
+import android.os.CountDownTimer
 import android.os.Handler
 import android.telecom.Call.Callback
 import android.telecom.CallAudioState
@@ -12,14 +18,25 @@ import android.telecom.InCallService
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.chooloo.www.chooloolib.R
+import com.chooloo.www.chooloolib.dbase.Ad
+import com.chooloo.www.chooloolib.dbase.AdDAO
+import com.chooloo.www.chooloolib.dbase.AdDatabase
 import com.chooloo.www.chooloolib.interactor.callaudio.CallAudiosInteractor
 import com.chooloo.www.chooloolib.interactor.calls.CallsInteractor
 import com.chooloo.www.chooloolib.model.Call
 import com.chooloo.www.chooloolib.notification.CallNotification
 import com.chooloo.www.chooloolib.repository.calls.CallsRepository
 import com.chooloo.www.chooloolib.ui.call.CallActivity
+
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 import javax.inject.Inject
 
 @SuppressLint("NewApi")
@@ -29,28 +46,100 @@ class CallService : InCallService() {
     @Inject lateinit var callsRepository: CallsRepository
     @Inject lateinit var callsInteractor: CallsInteractor
     @Inject lateinit var callNotification: CallNotification
-
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var runnable:Runnable
     private var handler: Handler = Handler()
     private var isPlayed:Boolean = false
 
+
+    private val sharedPrefFile = "kotlinsharedpreference"
+//    private lateinit var db:RoomDatabase
+//    private lateinit var adDAO: AdDAO
+//    private lateinit var  ads:List<Ad>
+
     val calls = MutableLiveData<List<Call>>()
     private val callListener = object : Callback() {
         override fun onStateChanged(call: android.telecom.Call?, state: Int) {
             super.onStateChanged(call, state)
-            if (state == android.telecom.Call.STATE_DIALING) {
-              // Toast.makeText(applicationContext,"dialing",Toast.LENGTH_LONG).show();
-                mediaPlayer = MediaPlayer.create(this@CallService, R.raw.ring)
+            if (state == android.telecom.Call.STATE_DIALING||state==android.telecom.Call.STATE_CONNECTING) {
+               Toast.makeText(applicationContext,"dialing",Toast.LENGTH_LONG).show();
+                val db= Room.databaseBuilder(applicationContext,AdDatabase::class.java,"ad.db").allowMainThreadQueries().build();
+                val adDao=db.adDAO();
+                val ad=adDao.getAds(false)
+
+
+                if (ad.isNotEmpty()){
+                    Toast.makeText(applicationContext,ad[0].path,Toast.LENGTH_LONG).show()
+
+                   val file=File(ad[0].path);
+
+                    if(file.exists()){
+                        Toast.makeText(this@CallService,"file exists",Toast.LENGTH_LONG).show();
+                        mediaPlayer = MediaPlayer.create(this@CallService, Uri.fromFile(file));
+                    }
+
+                }
+
                 mediaPlayer.setOnCompletionListener {
                     Toast.makeText(this@CallService,"ad completed",Toast.LENGTH_LONG).show();
                 }
+                val timer = object: CountDownTimer(4000, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        // do something
+                        Log.d("SHYAM","tick");
+                    }
+                    override fun onFinish() {
+                        // do something
+                        if(mediaPlayer.isPlaying&&ad.isNotEmpty()){
+                            adDao.updatePlayed(true,ad[0].path);
+                            if(isOnline(applicationContext)){
+                                val queue = Volley.newRequestQueue(applicationContext)
+                                val sharedPreferences: SharedPreferences = getSharedPreferences(
+                                    sharedPrefFile,
+                                    Context.MODE_PRIVATE
+                                )
+                                // val editor: SharedPreferences.Editor =  sharedPreferences.edit()
+                                val phone=sharedPreferences.getString("user_number","empty");
+
+
+                                // editor.apply()
+                                //val phone= Firebase.auth.currentUser?.phoneNumber;
+                                Toast.makeText(applicationContext,phone,Toast.LENGTH_LONG).show();
+                                Toast.makeText(applicationContext,ad[0].path,Toast.LENGTH_LONG).show();
+                                if(phone!="empty"){
+                                    val url = "http://159.223.197.192:3000/api/user/updateCampaign/"+ad[0].campaignUid+"/"+phone;
+
+// Request a string response from the provided URL.
+                                    val stringRequest = StringRequest(
+                                        Request.Method.GET, url,
+                                        { response ->
+                                            // Display the first 500 characters of the response string.
+                                            Toast.makeText(applicationContext,response,Toast.LENGTH_LONG).show();
+                                            adDao.updateUpdated(true,ad[0].path);
+
+                                        },
+                                        {
+                                            Toast.makeText(applicationContext,it.localizedMessage,Toast.LENGTH_LONG).show();
+                                        })
+
+// Add the request to the RequestQueue.
+                                    queue.add(stringRequest)
+                                    queue.start();
+                                }
+
+                            }
+                        }
+                        Thread.sleep(3000);
+                    }
+                }
+                timer.start()
+
 //                mediaPlayer.setAudioStreamType(AudioManager.MODE_IN_CALL);
                 mediaPlayer.start()
                 isPlayed=true;
              //   Toast.makeText(applicationContext,"media playing",Toast.LENGTH_SHORT).show()
             }
-            if (state != android.telecom.Call.STATE_DIALING) {
+            if (state!=android.telecom.Call.STATE_DIALING&&state!=android.telecom.Call.STATE_CONNECTING) {
             if(isPlayed){
                 mediaPlayer.stop();
             }
@@ -120,7 +209,27 @@ class CallService : InCallService() {
         list?.remove(call)
         calls.value = list
     }
-
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (connectivityManager != null) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                    return true
+                }
+            }
+        }
+        return false
+    }
 
     companion object {
         var sIsActivityActive = false

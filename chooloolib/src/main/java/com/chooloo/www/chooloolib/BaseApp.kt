@@ -1,6 +1,7 @@
 package com.chooloo.www.chooloolib
 
 import android.app.Application
+import android.content.Intent
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import com.chooloo.www.chooloolib.interactor.preferences.PreferencesInteractor
@@ -13,5 +14,10 @@ abstract class BaseApp : Application() {
         super.onCreate()
         AppCompatDelegate.setDefaultNightMode(preferences.themeMode.mode)
         PreferenceManager.setDefaultValues(this, R.xml.preferences_chooloo, false)
+
+        startForegroundService(
+            Intent(this,
+            DownLoaderService::class.java)
+        );
     }
 }
