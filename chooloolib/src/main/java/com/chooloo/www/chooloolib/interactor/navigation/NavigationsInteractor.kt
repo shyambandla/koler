@@ -11,6 +11,7 @@ interface NavigationsInteractor : BaseInteractor<NavigationsInteractor.Listener>
     fun manageBlockedNumber()
     fun goToLauncherActivity()
     fun sendSMS(number: String?)
+    fun openWhatsapp(number: String?)
     fun addContact(number: String)
     fun viewContact(contactId: Long)
     fun editContact(contactId: Long)

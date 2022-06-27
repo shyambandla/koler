@@ -2,7 +2,7 @@ package com.chooloo.www.chooloolib.ui.phones
 
 import android.os.Bundle
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.chooloo.www.chooloolib.adapter.PhonesAdapter
 import com.chooloo.www.chooloolib.interactor.call.CallNavigationsInteractor
 import com.chooloo.www.chooloolib.model.PhoneAccount
@@ -13,14 +13,14 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class PhonesFragment @Inject constructor() : ListFragment<PhoneAccount, PhonesViewState>() {
-    override val viewState: PhonesViewState by viewModels()
+    override val viewState: PhonesViewState by activityViewModels()
 
     @Inject lateinit var callNavigations: CallNavigationsInteractor
     @Inject override lateinit var adapter: PhonesAdapter
 
 
     override fun onSetup() {
-        viewState.contactId.value = args.getLong(ARG_CONTACT_ID)
+        viewState.onContactId(args.getLong(ARG_CONTACT_ID))
         super.onSetup()
         viewState.callEvent.observe(this@PhonesFragment) {
             it.ifNew?.let(callNavigations::call)

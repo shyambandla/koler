@@ -17,13 +17,17 @@ abstract class ListViewState<ItemType> : BaseViewState() {
     val itemLongClickedEvent = DataLiveEvent<ItemType>()
     val itemsChangedEvent = DataLiveEvent<List<ItemType>>()
 
+    protected open val noResultsIconRes: Int? = null
+    protected open val noResultsTextRes: Int? = null
+    protected open val noPermissionsTextRes: Int? = null
+    
 
     override fun attach() {
         emptyIcon.value = noResultsIconRes
         emptyMessage.value = noResultsTextRes
     }
 
-    fun onItemsChanged(items: List<ItemType>) {
+    open fun onItemsChanged(items: List<ItemType>) {
         isLoading.value = false
         isEmpty.value = items.isEmpty()
         itemsChangedEvent.call(items)
@@ -43,12 +47,11 @@ abstract class ListViewState<ItemType> : BaseViewState() {
 
     fun onPermissionsChanged(hasPermissions: Boolean) {
         emptyMessage.value = if (hasPermissions) noResultsTextRes else noPermissionsTextRes
+        isEmpty.value = !hasPermissions
     }
+
     open fun onItemLeftClick(item: ItemType) {}
     open fun onItemRightClick(item: ItemType) {}
 
-    protected open val noResultsIconRes: Int? = null
-    protected open val noResultsTextRes: Int? = null
-    protected open val noPermissionsTextRes: Int? = null
     abstract fun getItemsObservable(callback: (LiveData<List<ItemType>>) -> Unit)
 }
