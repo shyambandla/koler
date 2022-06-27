@@ -10,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.SwitchCompat
 import com.chooloo.www.chooloolib.R
 import com.chooloo.www.chooloolib.WalletActivity
+import com.chooloo.www.chooloolib.ui.aboutus.Aboutus
 import com.google.android.material.navigation.NavigationView
 import com.chooloo.www.chooloolib.ui.ads.SelectPreferencesActivity
 import com.chooloo.www.chooloolib.ui.faq.FaqActivity
@@ -46,42 +48,58 @@ class AccountFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val v=inflater.inflate(R.layout.fragment_account, container, false)
-        val nav=v.findViewById<NavigationView>(R.id.navigationView) as NavigationView
-      val header= nav.getHeaderView(0)
-        if(activity!=null) {
-            val sharedPreferences: SharedPreferences = activity!!.getSharedPreferences(
+        val v = inflater.inflate(R.layout.fragment_account, container, false)
+        val nav = v.findViewById<NavigationView>(R.id.navigationView) as NavigationView
+        val header = nav.getHeaderView(0)
+        if (activity != null) {
+            val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences(
                 sharedPrefFile,
                 Context.MODE_PRIVATE
             )
-            val number=header.findViewById<TextView>(R.id.profile_number)
-            val user=sharedPreferences.getString("user_number","")
-            number.text=user
+            val number = header.findViewById<TextView>(R.id.profile_number)
+            val user = sharedPreferences.getString("user_number", "")
+            number.text = user
         }
+        val vv = LayoutInflater.from(context).inflate(R.layout.drawer_chip, null);
 
-        nav.setNavigationItemSelectedListener{
-           when(it.itemId){
-               R.id.my_wallet-> {val intent=Intent(activity,WalletActivity::class.java)
-               startActivity(intent)
-               }
-               R.id.ad_preferences-> {
-                   val intent=Intent(activity,SelectPreferencesActivity::class.java)
-                   startActivity(intent)
-               }
-               R.id.log_out->{
+        vv?.findViewById<SwitchCompat>(R.id.toggleSwitch)
+            ?.setOnCheckedChangeListener { _, isChecked ->
+                Toast.makeText(
+                    this.context,
+                    "checkexc",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        nav.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.my_wallet -> {
+                    val intent = Intent(activity, WalletActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.ad_preferences -> {
+                    val intent = Intent(activity, SelectPreferencesActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.log_out -> {
 
-                  Toast.makeText(this.context,"Logout not implemented yet",Toast.LENGTH_LONG).show();
-               }
+                    Toast.makeText(this.context, "Logout not implemented yet", Toast.LENGTH_LONG)
+                        .show();
+                }
 
-               R.id.withdraw_amount->{
-                   val intent=Intent(activity,WalletActivity::class.java)
-                       startActivity(intent)
-               }
-               R.id.about_us->{
-                   val intent=Intent(activity,FaqActivity::class.java)
-                   startActivity(intent)
-               }
-           }
+                R.id.withdraw_amount -> {
+                    val intent = Intent(activity, WalletActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.about_us -> {
+                    val intent = Intent(activity, FaqActivity::class.java)
+                    startActivity(intent)
+                }
+                R.id.faq -> {
+                    val intent = Intent(activity, Aboutus::class.java)
+                    startActivity(intent)
+                }
+
+            }
             true
         }
         return v
