@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.chooloo.www.chooloolib">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -11,7 +12,13 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
+
     <application>
+        <receiver
+            android:name=".AudioReciever"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
         <activity
             android:name=".ui.faq.FaqActivity"
             android:exported="false" />
@@ -26,8 +33,6 @@
             android:configChanges="screenSize|keyboardHidden"
             android:excludeFromRecents="true"
             android:screenOrientation="unspecified" />
-            android:exported="false"
-            android:screenOrientation="fullSensor" />
         <activity
             android:name=".ui.permissions.PermissionRequestActivity"
             android:screenOrientation="unspecified" />

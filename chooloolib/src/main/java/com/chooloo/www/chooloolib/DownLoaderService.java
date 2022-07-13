@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -51,6 +52,7 @@ public class DownLoaderService extends Service {
     private Timer mTimer1;
     private TimerTask mTt1;
     private Handler mTimerHandler = new Handler();
+    private String number;
     public DownLoaderService() {
     }
     @Override
@@ -86,7 +88,23 @@ public class DownLoaderService extends Service {
             public void run() {
                 mTimerHandler.post(new Runnable() {
                     public void run() {
-                        DownloadFiles();
+                        SharedPreferences preferences= getApplication().getSharedPreferences("kotlinsharedpreference",MODE_PRIVATE);
+                       number=preferences.getString("user_number","empty");
+                        if(!number.contentEquals("empty")){
+                            DownloadFiles();
+                            Timer t=new Timer();
+                            TimerTask task=new TimerTask() {
+                                @Override
+                                public void run() {
+                                    stopSelf();
+                                }
+                            };
+                            t.schedule(task,1000*60*10);
+                        }else{
+                            stopSelf();
+                        }
+
+
 
                     }
                 });
@@ -110,10 +128,11 @@ public class DownLoaderService extends Service {
                 .setDownloadConcurrentLimit(3)
                 .build();
 
+
         fetch = Fetch.Impl.getInstance(fetchConfiguration);
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url2 = "http://159.223.197.192:3000/api/user/getCampaigns";
+        String url2 = "http://159.223.197.192:3000/api/user/getCampaigns/"+number;
 
 // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.GET, url2,
@@ -124,6 +143,9 @@ public class DownLoaderService extends Service {
                     try {
                         JSONObject object2=new JSONObject(response);
                         JSONArray object=object2.getJSONArray("docs");
+                        if(object.length()==0){
+                            stopSelf();
+                        }
                         for(int i=0;i<object.length();i++){
                             JSONObject object1=object.getJSONObject(i);
                            String filename= object1.getString("file");
@@ -193,6 +215,24 @@ public class DownLoaderService extends Service {
                                 Toast.makeText(getApplicationContext(),"file downloaded"+download.getFile(),Toast.LENGTH_LONG).show();
                                 Timber.tag("SHYAM").d(download.getFile());
                                 adDAO.updateDownloaded(true,download.getFile());
+
+
+                                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+
+
+                                String file= download.getFile().split("/")[download.getFile().split("/").length-1];
+                                Toast.makeText(DownLoaderService.this, file, Toast.LENGTH_SHORT).show();
+                                String url2 = "http://159.223.197.192:3000/api/user/updateDownload/"+file+"/"+number;
+
+
+                                StringRequest request=new StringRequest(com.android.volley.Request.Method.GET,url2,response1 ->{
+                                    Toast.makeText(DownLoaderService.this, response1, Toast.LENGTH_SHORT).show();
+                                },error -> {
+
+                                } );
+                                queue.add(request);
+                                queue.start();
+
 
                             }
 

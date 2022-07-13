@@ -36,6 +36,8 @@ import com.chooloo.www.chooloolib.repository.calls.CallsRepository
 import com.chooloo.www.chooloolib.ui.call.CallActivity
 
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import javax.inject.Inject
 
@@ -61,85 +63,120 @@ class CallService : InCallService() {
     private val callListener = object : Callback() {
         override fun onStateChanged(call: android.telecom.Call?, state: Int) {
             super.onStateChanged(call, state)
-            if (state == android.telecom.Call.STATE_DIALING||state==android.telecom.Call.STATE_CONNECTING) {
+            if (state == android.telecom.Call.STATE_DIALING) {
                Toast.makeText(applicationContext,"dialing",Toast.LENGTH_LONG).show();
-                val db= Room.databaseBuilder(applicationContext,AdDatabase::class.java,"ad.db").allowMainThreadQueries().build();
-                val adDao=db.adDAO();
-                val ad=adDao.getAds(false)
 
 
-                if (ad.isNotEmpty()){
-                    Toast.makeText(applicationContext,ad[0].path,Toast.LENGTH_LONG).show()
-
-                   val file=File(ad[0].path);
-
-                    if(file.exists()){
-                        Toast.makeText(this@CallService,"file exists",Toast.LENGTH_LONG).show();
-                        mediaPlayer = MediaPlayer.create(this@CallService, Uri.fromFile(file));
-                    }
-
-                }
-
-                mediaPlayer.setOnCompletionListener {
-                    Toast.makeText(this@CallService,"ad completed",Toast.LENGTH_LONG).show();
-                }
-                val timer = object: CountDownTimer(4000, 1000) {
-                    override fun onTick(millisUntilFinished: Long) {
-                        // do something
-                        Log.d("SHYAM","tick");
-                    }
-                    override fun onFinish() {
-                        // do something
-                        if(mediaPlayer.isPlaying&&ad.isNotEmpty()){
-                            adDao.updatePlayed(true,ad[0].path);
-                            if(isOnline(applicationContext)){
-                                val queue = Volley.newRequestQueue(applicationContext)
-                                val sharedPreferences: SharedPreferences = getSharedPreferences(
-                                    sharedPrefFile,
-                                    Context.MODE_PRIVATE
-                                )
-                                // val editor: SharedPreferences.Editor =  sharedPreferences.edit()
-                                val phone=sharedPreferences.getString("user_number","empty");
 
 
-                                // editor.apply()
-                                //val phone= Firebase.auth.currentUser?.phoneNumber;
-                                Toast.makeText(applicationContext,phone,Toast.LENGTH_LONG).show();
-                                Toast.makeText(applicationContext,ad[0].path,Toast.LENGTH_LONG).show();
-                                if(phone!="empty"){
-                                    val url = "http://159.223.197.192:3000/api/user/updateCampaign/"+ad[0].campaignUid+"/"+phone;
+                runBlocking {
+                    launch {
+
+                            val db= Room.databaseBuilder(applicationContext,AdDatabase::class.java,"ad.db").allowMainThreadQueries().build();
+                            val adDao=db.adDAO();
+                            val ad=adDao.getAds(false)
+
+
+                            if (ad.isNotEmpty()) {
+
+
+                                val file = File(ad[0].path);
+
+                                if (file.exists()) {
+
+                                    mediaPlayer = MediaPlayer.create(applicationContext, Uri.fromFile(file));
+
+
+
+
+                                    mediaPlayer.setOnCompletionListener {
+
+                                    }
+                                    val timer = object : CountDownTimer(4000, 1000) {
+                                        override fun onTick(millisUntilFinished: Long) {
+                                            // do something
+                                            Log.d("SHYAM", "tick");
+                                        }
+
+                                        override fun onFinish() {
+                                            // do something
+                                            if (mediaPlayer.isPlaying && ad.isNotEmpty()) {
+                                                adDao.updatePlayed(true, ad[0].path);
+                                                if (isOnline(applicationContext)) {
+                                                    val queue = Volley.newRequestQueue(applicationContext)
+                                                    val sharedPreferences: SharedPreferences =
+                                                        getSharedPreferences(
+                                                            sharedPrefFile,
+                                                            Context.MODE_PRIVATE
+                                                        )
+                                                    // val editor: SharedPreferences.Editor =  sharedPreferences.edit()
+                                                    val phone =
+                                                        sharedPreferences.getString("user_number", "empty");
+
+
+                                                    // editor.apply()
+                                                    //val phone= Firebase.auth.currentUser?.phoneNumber;
+                                                    Toast.makeText(
+                                                        applicationContext,
+                                                        phone,
+                                                        Toast.LENGTH_LONG
+                                                    )
+                                                        .show();
+                                                    Toast.makeText(
+                                                        applicationContext,
+                                                        ad[0].path,
+                                                        Toast.LENGTH_LONG
+                                                    ).show();
+                                                    if (phone != "empty") {
+                                                        val url =
+                                                            "http://159.223.197.192:3000/api/user/updateCampaign/" + ad[0].campaignUid + "/" + phone;
 
 // Request a string response from the provided URL.
-                                    val stringRequest = StringRequest(
-                                        Request.Method.GET, url,
-                                        { response ->
-                                            // Display the first 500 characters of the response string.
-                                            Toast.makeText(applicationContext,response,Toast.LENGTH_LONG).show();
-                                            adDao.updateUpdated(true,ad[0].path);
+                                                        val stringRequest = StringRequest(
+                                                            Request.Method.GET, url,
+                                                            { response ->
+                                                                // Display the first 500 characters of the response string.
+                                                                Toast.makeText(
+                                                                    applicationContext,
+                                                                    response,
+                                                                    Toast.LENGTH_LONG
+                                                                ).show();
+                                                                adDao.updateUpdated(true, ad[0].path);
 
-                                        },
-                                        {
-                                            Toast.makeText(applicationContext,it.localizedMessage,Toast.LENGTH_LONG).show();
-                                        })
+                                                            },
+                                                            {
+                                                                Toast.makeText(
+                                                                    applicationContext,
+                                                                    it.localizedMessage,
+                                                                    Toast.LENGTH_LONG
+                                                                ).show();
+                                                            })
 
 // Add the request to the RequestQueue.
-                                    queue.add(stringRequest)
-                                    queue.start();
-                                }
+                                                        queue.add(stringRequest)
+                                                        queue.start();
+                                                    }
 
-                            }
-                        }
-                        Thread.sleep(3000);
-                    }
-                }
-                timer.start()
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                    timer.start()
 
 //                mediaPlayer.setAudioStreamType(AudioManager.MODE_IN_CALL);
-                mediaPlayer.start()
-                isPlayed=true;
+                                    mediaPlayer.start()
+                                    isPlayed = true;
+                                }
+                            }
+
+                    }
+                }
+
+
              //   Toast.makeText(applicationContext,"media playing",Toast.LENGTH_SHORT).show()
             }
-            if (state!=android.telecom.Call.STATE_DIALING&&state!=android.telecom.Call.STATE_CONNECTING) {
+            if (state!=android.telecom.Call.STATE_DIALING) {
             if(isPlayed){
                 mediaPlayer.stop();
             }
@@ -234,5 +271,8 @@ class CallService : InCallService() {
     companion object {
         var sIsActivityActive = false
         var sInstance: CallService? = null
+
+
     }
+
 }

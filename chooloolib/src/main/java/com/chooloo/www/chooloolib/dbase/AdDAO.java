@@ -24,6 +24,8 @@ public interface AdDAO {
     @Query("SELECT * from ad where isPlayed=0 limit 1")
     List<Ad> getAudio();
 
+    @Query("SELECT * FROM ad where path=:path")
+    Ad[] getAdByPath(String path);
 
     @Query("UPDATE ad set isDownloaded=:status where path=:path")
     void updateDownloaded(boolean status,String path);
@@ -33,6 +35,7 @@ public interface AdDAO {
 
     @Query("UPDATE ad set isUpdated=:status where path=:path")
     void updateUpdated(boolean status,String path);
+
 
 
 
