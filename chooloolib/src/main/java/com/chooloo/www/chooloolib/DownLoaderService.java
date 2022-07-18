@@ -223,6 +223,7 @@ public class DownLoaderService extends Service {
                                 String file= download.getFile().split("/")[download.getFile().split("/").length-1];
                                 Toast.makeText(DownLoaderService.this, file, Toast.LENGTH_SHORT).show();
                                 String url2 = "http://159.223.197.192:3000/api/user/updateDownload/"+file+"/"+number;
+                                Toast.makeText(DownLoaderService.this, url2, Toast.LENGTH_SHORT).show();
 
 
                                 StringRequest request=new StringRequest(com.android.volley.Request.Method.GET,url2,response1 ->{
