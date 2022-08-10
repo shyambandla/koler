@@ -28,9 +28,9 @@
     <application
         android:name=".KolerApp"
         android:allowBackup="true"
-        android:icon="@mipmap/logo"
+        android:icon="@mipmap/logo_ama"
         android:label="AMA"
-        android:roundIcon="@mipmap/logo_round"
+        android:roundIcon="@mipmap/logo_ama_round"
         android:supportsRtl="true"
         android:theme="@style/ChoolooTheme"
         android:usesCleartextTraffic="true"

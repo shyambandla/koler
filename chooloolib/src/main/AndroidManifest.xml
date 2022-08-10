@@ -14,10 +14,17 @@
         tools:ignore="ScopedStorage" />
 
     <application>
+
+
+        <service android:name=".service.AdService"
+            android:enabled="true"
+            android:exported="true"
+            />
+
         <receiver
             android:name=".AudioReciever"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
 
         <activity
             android:name=".ui.faq.FaqActivity"

@@ -118,7 +118,7 @@ public class DownLoaderService extends Service {
     public void DownloadFiles(){
 
 
-        Toast.makeText(getApplicationContext(),"datab",Toast.LENGTH_LONG).show();
+      //  // Toast.makeText(this,"datab",Toast.LENGTH_LONG).show();
         AdDatabase db= Room.databaseBuilder(this,
                 AdDatabase.class,"ad.db").allowMainThreadQueries().build();
         AdDAO adDAO=db.adDAO();
@@ -137,7 +137,7 @@ public class DownLoaderService extends Service {
 // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.GET, url2,
                 response -> {
-                    Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+                  //  // Toast.makeText(this,response,Toast.LENGTH_LONG).show();
                     // Display the first 500 characters of the response string.
                     Timber.tag("SHYAM").d(response);
                     try {
@@ -150,12 +150,12 @@ public class DownLoaderService extends Service {
                             JSONObject object1=object.getJSONObject(i);
                            String filename= object1.getString("file");
                            String campaignUid=object1.getString("uid");
-                          Toast.makeText(getApplicationContext(),filename,Toast.LENGTH_LONG).show();
+                          // Toast.makeText(this,filename,Toast.LENGTH_LONG).show();
                             String url = "https://shyambandla.com/api/"+filename;
 
                             //File path=Environment.getExternalStorageDirectory();
                             File path = new File(getFilesDir(), filename);
-                            Toast.makeText(this, path.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(this, path.getAbsolutePath(), Toast.LENGTH_SHORT).show();
                             String file = path.getAbsolutePath();
 
                             final Request request = new Request(url, file);
@@ -164,7 +164,7 @@ public class DownLoaderService extends Service {
                             //request.addHeader("clientKey", "SD78DF93_3947&MVNGHE1WONG");
 
                                 fetch.enqueue(request, updatedRequest -> {
-                                    Toast.makeText(getApplicationContext(), "enqued", Toast.LENGTH_LONG).show();
+                                    // Toast.makeText(this, "enqued", Toast.LENGTH_LONG).show();
                                     //Request was successfully enqueued for download.
 
 
@@ -174,7 +174,7 @@ public class DownLoaderService extends Service {
 
 
                                 }, error -> {
-                                   Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                                   // Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show();
                                     //An error occurred enqueuing the request.
                                 });
 
@@ -206,28 +206,28 @@ public class DownLoaderService extends Service {
                             @Override
                             public void onQueued(@NotNull Download download, boolean waitingOnNetwork) {
 
-                                    Toast.makeText(getApplicationContext(),download.getFile(),Toast.LENGTH_LONG).show();
+                                    // Toast.makeText(this,download.getFile(),Toast.LENGTH_LONG).show();
 
                             }
 
                             @Override
                             public void onCompleted(@NotNull Download download) {
-                                Toast.makeText(getApplicationContext(),"file downloaded"+download.getFile(),Toast.LENGTH_LONG).show();
+                                // Toast.makeText(this,"file downloaded"+download.getFile(),Toast.LENGTH_LONG).show();
                                 Timber.tag("SHYAM").d(download.getFile());
                                 adDAO.updateDownloaded(true,download.getFile());
 
 
-                                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                                RequestQueue queue = Volley.newRequestQueue(DownLoaderService.this);
 
 
                                 String file= download.getFile().split("/")[download.getFile().split("/").length-1];
-                                Toast.makeText(DownLoaderService.this, file, Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(this, file, Toast.LENGTH_SHORT).show();
                                 String url2 = "http://159.223.197.192:3000/api/user/updateDownload/"+file+"/"+number;
-                                Toast.makeText(DownLoaderService.this, url2, Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(this, url2, Toast.LENGTH_SHORT).show();
 
 
                                 StringRequest request=new StringRequest(com.android.volley.Request.Method.GET,url2,response1 ->{
-                                    Toast.makeText(DownLoaderService.this, response1, Toast.LENGTH_SHORT).show();
+                                    // Toast.makeText(this, response1, Toast.LENGTH_SHORT).show();
                                 },error -> {
 
                                 } );
@@ -246,7 +246,7 @@ public class DownLoaderService extends Service {
                             public void onProgress(@NotNull Download download, long etaInMilliSeconds, long downloadedBytesPerSecond) {
 
                                 int progress = download.getProgress();
-                                Log.d("SHYAM", String.valueOf(progress));
+                              //  Log.d("SHYAM", String.valueOf(progress));
                             }
 
                             @Override
@@ -284,7 +284,7 @@ public class DownLoaderService extends Service {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("SHYAM",error.getMessage());
+              //  Log.d("SHYAM",error.getMessage());
                // textView.setText("That didn't work!");
             }
         });

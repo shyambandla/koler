@@ -13,11 +13,25 @@ import javax.inject.Inject
 open class BottomFragment<FragmentType : BaseFragment<BaseViewState>>(
     private val fragment: FragmentType
 ) : BottomSheetDialogFragment(), BaseView<BaseViewState> {
+
+
+
+
     override val viewState: BaseViewState by viewModels()
 
     private val binding by lazy { BottomDialogBinding.inflate(layoutInflater) }
 
     @Inject lateinit var baseActivity: BaseActivity<*>
+
+
+    companion object{
+        fun newInstance(fragment: BaseFragment<BaseViewState>)=BottomFragment(fragment).apply {
+            arguments=Bundle().apply {
+
+            }
+        }
+    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
